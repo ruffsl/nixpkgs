@@ -1,12 +1,13 @@
 {
   appendOverlays,
-  buildGoModule,
+  buildGo123Module,
   copyDesktopItems,
   e2fsprogs,
   fetchFromGitHub,
   iproute2,
   iptables,
   lib,
+  libtelio,
   libxml2,
   makeDesktopItem,
   makeWrapper,
@@ -58,7 +59,7 @@ let
       })
     ];
 in
-buildGoModule (finalAttrs: {
+buildGo123Module (finalAttrs: {
 
   pname = "nordvpn";
   version = "3.20.3";
@@ -77,8 +78,7 @@ buildGoModule (finalAttrs: {
   ];
 
   buildInputs = [
-    # cgo build dependencies go here
-    # https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/go.section.md#envcgo_enabled-var-go-cgo_enabled
+    libtelio
     libxml2
   ];
 
@@ -106,10 +106,19 @@ buildGoModule (finalAttrs: {
     "-X main.Version=${finalAttrs.version}"
   ];
 
+  tags = [
+    "drop"
+    # "moose"
+    "telio"
+  ];
+
   subPackages = [
     "cmd/cli"
     "cmd/daemon"
+    # "cmd/downloader"
+    # "cmd/fileshare"
     "cmd/norduser"
+    # "cmd/pulp"
   ];
 
   doCheck = true;
