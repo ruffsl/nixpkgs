@@ -81,6 +81,11 @@ buildGo123Module (finalAttrs: {
     libtelio
     libxml2
   ];
+  NIX_CFLAGS_COMPILE = ''
+    -Wno-implicit-function-declaration
+    -Wno-discarded-qualifiers
+    -Wno-deprecated-declarations
+  '';
 
   vendorHash = "sha256-NonkCcSDxLFoFo8XIxyMRO61GbC1fohVHiJH7stnQW8=";
 
