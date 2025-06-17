@@ -61,10 +61,10 @@ in
 buildGoModule (finalAttrs: {
 
   pname = "nordvpn";
-  version = "3.20.2";
+  version = "3.20.3";
 
   src = fetchFromGitHub {
-    hash = "sha256-XB/wOdp97VnAkzHTHrJ2xffEx4HNFWn9yjFz3TsaEsE=";
+    hash = "sha256-iNXDH3vzsJGFFDIHRDA2F2n/v6sSpJK2CG3HzIzM8u4=";
     owner = "NordSecurity";
     repo = "nordvpn-linux";
     tag = finalAttrs.version;
@@ -82,7 +82,7 @@ buildGoModule (finalAttrs: {
     libxml2
   ];
 
-  vendorHash = "sha256-j7/gvzEgLZUq+I65KF3CSAj1cW9wtKvsy/ydzyr1HYE=";
+  vendorHash = "sha256-NonkCcSDxLFoFo8XIxyMRO61GbC1fohVHiJH7stnQW8=";
 
   modPostBuild = ''
     patch -p0 < ${./gokogiri-xpath-expression.patch}
