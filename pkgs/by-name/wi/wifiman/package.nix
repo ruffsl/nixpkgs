@@ -9,17 +9,17 @@
   makeWrapper,
   nettools,
   stdenv,
-  webkitgtk_4_0,
+  webkitgtk_4_1,
   wirelesstools,
 }:
 
 stdenv.mkDerivation rec {
-  version = "1.1.3";
+  version = "1.2.5";
   pname = "wifiman";
 
   src = fetchurl {
-    url = "https://desktop.wifiman.com/wifiman-desktop-${version}-amd64.deb";
-    hash = "sha256-y//hyqymtgEdrKZt3milTb4pp+TDEDQf6RehYgDnhzA=";
+    url = "https://desktop.ea.wifiman.com/wifiman-desktop-${version}-amd64.deb";
+    hash = "sha256-Caobtr1wMEfrNH/6Ndxw1cbPArCVhrc59VtRus8+FDo=";
   };
 
   nativeBuildInputs = [
@@ -33,14 +33,14 @@ stdenv.mkDerivation rec {
     iw
     libayatana-appindicator
     nettools
-    webkitgtk_4_0
+    webkitgtk_4_1
     wirelesstools
   ];
 
   installPhase = ''
     mv usr $out
     # Wrap the service binary
-    makeWrapper $out/lib/wi-fiman-desktop/wifiman-desktopd $out/bin/wifiman-desktopd \
+    makeWrapper $out/lib/wifiman-desktop/wifiman-desktopd $out/bin/wifiman-desktopd \
       --prefix PATH : ${
       lib.makeBinPath [
         iw
@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
       ]
     }
     # Wrap the desktop binary
-    wrapProgram $out/bin/wi-fiman-desktop \
+    wrapProgram $out/bin/wifiman-desktop \
       --prefix PATH : ${
         lib.makeBinPath [
           desktop-file-utils
@@ -66,7 +66,7 @@ stdenv.mkDerivation rec {
     description = "Desktop App for UniFi Device Discovery and Teleport VPN";
     homepage = "https://wifiman.com";
     license = licenses.unfree;
-    mainProgram = "wi-fiman-desktop";
+    mainProgram = "wifiman-desktop";
     maintainers = with maintainers; [ neverbehave ruffsl ];
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
