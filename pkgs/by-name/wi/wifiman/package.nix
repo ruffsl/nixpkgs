@@ -8,11 +8,11 @@
   libayatana-appindicator,
   makeWrapper,
   nettools,
+  qt6,
   stdenv,
   webkitgtk_4_1,
   wirelesstools,
   xdg-utils,
-  qt6,
 }:
 
 stdenv.mkDerivation rec {
@@ -35,11 +35,11 @@ stdenv.mkDerivation rec {
     iw
     libayatana-appindicator
     nettools
+    qt6.qttools
+    qt6.wrapQtAppsHook
     webkitgtk_4_1
     wirelesstools
     xdg-utils
-    qt6.qttools
-    qt6.wrapQtAppsHook
   ];
 
   installPhase = ''
