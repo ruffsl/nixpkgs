@@ -11,6 +11,8 @@
   stdenv,
   webkitgtk_4_1,
   wirelesstools,
+  xdg-utils,
+  qt6,
 }:
 
 stdenv.mkDerivation rec {
@@ -35,6 +37,9 @@ stdenv.mkDerivation rec {
     nettools
     webkitgtk_4_1
     wirelesstools
+    xdg-utils
+    qt6.qttools
+    qt6.wrapQtAppsHook
   ];
 
   installPhase = ''
