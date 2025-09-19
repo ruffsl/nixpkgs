@@ -21,12 +21,12 @@
   nss,
   nspr,
   hwloc,
-  fetchurl,
+  fetchFromGitHub,
 }:
 
 let
   pname = "Slicer3D";
-  version = "5.6.2";
+  version = "5.8.1";
 
   hwloc_old = hwloc.overrideAttrs (
     old:
@@ -35,9 +35,12 @@ let
     in
     {
       version = hwloc_version;
-      src = fetchurl {
-        url = "https://www.open-mpi.org/software/hwloc/v${lib.versions.majorMinor hwloc_version}/downloads/hwloc-${hwloc_version}.tar.bz2";
-        sha256 = "sha256-OUMzGEJI1jyycIqXblfwUzfQO7UMM6owl/9cWnSoUWQ=";
+
+      src = fetchFromGitHub {
+        owner = "open-mpi";
+        repo = "hwloc";
+        tag = "hwloc-${hwloc_version}";
+        sha256 = "sha256-sNw9OfGKNwwue+IURVm7FmFNFJYP+3JWBdbX+PnCtaY=";
       };
     }
   );
@@ -59,7 +62,7 @@ stdenv.mkDerivation {
   src = fetchzip {
     name = "Slicer-${version}-linux-amd64.tar.gz";
     url = "http://download.slicer.org/download?os=linux&stability=release&version=${version}";
-    hash = "sha256-DmJS1yrwJBcAIRnVA8VdsO4u82E1MWX+uvRC+6dEXmM=";
+    hash = "sha256-zYlimrMUjSAWLGX0+jp5e6IBiWPv9gey9nLle/mnkHs=";
     extension = "tar.gz";
   };
 
