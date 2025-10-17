@@ -4,6 +4,7 @@
   copyDesktopItems,
   e2fsprogs,
   fetchFromGitHub,
+  flutter,
   iproute2,
   iptables,
   lib,
@@ -39,17 +40,27 @@ let
       );
   });
 
-in
-buildGoModule (finalAttrs: {
-  pname = "nordvpn";
   version = "4.2.0";
 
   src = fetchFromGitHub {
     owner = "NordSecurity";
     repo = "nordvpn-linux";
-    tag = finalAttrs.version;
+    tag = version;
     hash = "sha256-9uh/UkOS84tVeW/d6qQ6bYPXzGXEoD21QHzrcMcdj7M=";
   };
+
+  pubspecLock = lib.importJSON ./pubspec.lock.json;
+
+  guiApp = flutter.buildFlutterApplication {
+    pname = "nordvpn-gui";
+    inherit version src;
+    pubspecLock = pubspecLock;
+    sourceRoot = "${src.name}/gui";
+  };
+in
+buildGoModule (finalAttrs: {
+  pname = "nordvpn";
+  inherit version src;
 
   nativeBuildInputs = [
     copyDesktopItems
@@ -115,6 +126,9 @@ buildGoModule (finalAttrs: {
     install $BIN_DIR/norduser $BIN_DIR/norduserd
     rm $BIN_DIR/{cli,daemon,norduser}
 
+    # Copy GUI binary from guiApp
+    cp -r ${guiApp}/bin/* $BIN_DIR/
+
     # nordvpn needs icons for the system tray and notifications
     ASSETS_PATH=$out/share/icons/hicolor/scalable/apps
     install -D assets/icon.svg $ASSETS_PATH/nordvpn.svg
@@ -139,14 +153,24 @@ buildGoModule (finalAttrs: {
 
   desktopItems = [
     (makeDesktopItem {
-      categories = [ "Network" ];
-      comment = finalAttrs.meta.description;
+      name = "nordvpn";
       desktopName = "nordvpn";
       exec = "nordvpn click %u";
       icon = "nordvpn";
+      comment = finalAttrs.meta.description;
+      categories = [ "Network" "Security" "Utility" ];
       mimeTypes = [ "x-scheme-handler/nordvpn" ];
-      name = "nordvpn";
       terminal = true;
+      type = "Application";
+    })
+    (makeDesktopItem {
+      name = "nordvpn-gui";
+      desktopName = "NordVPN GUI";
+      exec = "nordvpn-gui";
+      icon = "nordvpn";
+      comment = "NordVPN graphical user interface.";
+      categories = [ "Network" "Security" "Utility" ];
+      terminal = false;
       type = "Application";
     })
   ];
